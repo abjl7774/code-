@@ -1,0 +1,53 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{circuitikz}
+\begin{document}
+\begin{circuitikz}[scale=1.2]
+\ctikzset{multiplexer/inputs=4, multiplexer/selects=2}
+% 74LS153 双4选1，用两个mux表示
+\draw
+(0,0) node[muxdemux, muxdemux size=2, muxdemux inputs=4, muxdemux outputs=1, anchor=in 1] (M1) {}
+(0,-4) node[muxdemux, muxdemux size=2, muxdemux inputs=4, muxdemux outputs=1, anchor=in 1] (M2) {};
+% 标注引脚
+\draw
+(M1.sel 1) node[above] {$S_1$}
+(M1.sel 2) node[above] {$S_0$}
+(M1.en) node[left] {$\overline{G}$}
+(M1.in 1) node[left] {$I_0$}
+(M1.in 2) node[left] {$I_1$}
+(M1.in 3) node[left] {$I_2$}
+(M1.in 4) node[left] {$I_3$}
+(M1.out 1) node[right] {$Y$};
+\draw
+(M2.sel 1) node[above] {$S_1$}
+(M2.sel 2) node[above] {$S_0$}
+(M2.en) node[left] {$\overline{G}$}
+(M2.in 1) node[left] {$I_0$}
+(M2.in 2) node[left] {$I_1$}
+(M2.in 3) node[left] {$I_2$}
+(M2.in 4) node[left] {$I_3$}
+(M2.out 1) node[right] {$Y$};
+% 使能接地
+(M1.en) to[short] ++(0,-0.3) node[ground]{}
+(M2.en) to[short] ++(0,-0.3) node[ground]{};
+% 选择端 S1=A, S0=B
+(M1.sel 1) to[short,-o] ++(-1,0) node[left] {$A$}
+(M1.sel 2) to[short,-o] ++(-1,0) node[left] {$B$}
+(M2.sel 1) to[short] (M1.sel 1)
+(M2.sel 2) to[short] (M1.sel 2);
+% 数据输入
+% 第一个mux: S = A⊕B⊕Ci
+(M1.in 1) to[short] ++(-0.5,0) node[ground]{} % I0=0
+(M1.in 2) to[short,-o] ++(-2,0) node[left] {$C_i$} % I1=Ci
+(M1.in 3) to[short] (M1.in 2) % I2=Ci
+(M1.in 4) to[short] ++(-1,0) node[not port, anchor=in] (notCi) {} % I3=~Ci
+(notCi.in) to[short] (M1.in 2);
+% 第二个mux: Co = AB + A Ci + B Ci
+(M2.in 1) to[short] ++(-0.5,0) node[ground]{} % I0=0
+(M2.in 2) to[short] (M1.in 2) % I1=Ci
+(M2.in 3) to[short] (M1.in 2) % I2=Ci
+(M2.in 4) to[short] ++(-0.5,0) node[vcc]{} % I3=1;
+% 输出
+(M1.out 1) to[short,-o] ++(1,0) node[right] {$S$}
+(M2.out 1) to[short,-o] ++(1,0) node[right] {$C_o$};
+\end{circuitikz}
+\end{document}

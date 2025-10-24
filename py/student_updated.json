@@ -1,0 +1,21 @@
+{
+    "name": "张三",
+    "courses": [
+        "Python",
+        "JavaScript",
+        "SQL",
+        "Vue"
+    ],
+    "age": 26,
+    "is_student": true,
+    "address": {
+        "city": "上海",
+        "zipcode": "100000"
+    },
+    "scores": [
+        85,
+        90,
+        78
+    ],
+    "avg_score": 84.33
+}

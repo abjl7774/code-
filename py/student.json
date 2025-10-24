@@ -1,0 +1,11 @@
+{
+  "name": "张三",
+  "courses": ["Python", "JavaScript", "SQL"],
+  "age": 25,
+  "is_student": false,
+  "address": {
+    "city": "北京",
+    "zipcode": "100000"
+  },
+  "scores": [85, 90, 78]
+}
